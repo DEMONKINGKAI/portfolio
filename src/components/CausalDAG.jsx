@@ -122,8 +122,11 @@ export default function CausalDAG() {
               animation: REDUCED_MOTION
                 ? 'none'
                 : `skillFloat 3s ease-in-out infinite ${s.delay}s, skillFadeIn 0.4s ease both ${i * 0.06 + 0.1}s`,
-              transition: 'opacity 0.2s',
+              transition: `scale ${REDUCED_MOTION ? '0.15s ease' : '0.45s cubic-bezier(0.34,1.56,0.64,1)'}, opacity 0.2s`,
               opacity: dim ? 0.25 : 1,
+              scale: on ? '1.13' : '1',
+              transformBox: 'fill-box',
+              transformOrigin: 'center',
             }}
           >
             <circle
@@ -174,8 +177,11 @@ export default function CausalDAG() {
             style={{
               cursor: 'pointer',
               outline: 'none',
-              transition: 'opacity 0.2s',
+              transition: `scale ${REDUCED_MOTION ? '0.15s ease' : '0.5s cubic-bezier(0.34,1.56,0.64,1)'}, opacity 0.2s`,
               opacity: dim ? 0.4 : 1,
+              scale: isHov ? '1.12' : '1',
+              transformBox: 'fill-box',
+              transformOrigin: 'center',
               animation: REDUCED_MOTION
                 ? 'none'
                 : `projectFadeIn 0.4s ease both ${i * 0.15 + 0.05}s`,
