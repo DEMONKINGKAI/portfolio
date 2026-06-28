@@ -1,17 +1,52 @@
 import { Mail, FileText, MapPin } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from './Icons'
 import CausalDAG from './CausalDAG'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const primaryLinks = [
-  { icon: GithubIcon,   label: 'GitHub',   href: 'YOUR_GITHUB_URL' },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: 'YOUR_LINKEDIN_URL' },
-  { icon: Mail,         label: 'Email',    href: 'mailto:YOUR_EMAIL' },
+  { icon: GithubIcon,   label: 'GitHub',   href: 'https://github.com/DEMONKINGKAI' },
+  { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/archit-sharma-work/' },
+  { icon: Mail,         label: 'Email',    href: 'mailto:sharmarchit.work@gmail.com' },
   { icon: FileText,     label: 'CV',       href: '/cv.pdf' },
 ]
 
+const TAGLINES = [
+  'AI / ML Engineer — causal systems & applied generative AI',
+  'building deterministic AI that reasons, not just generates',
+  'MSc AI/ML · graduating mid-2026 · based in Germany',
+]
+
+const MOBILE_STACKS = [
+  { name: 'Threadfall', skills: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind'] },
+  { name: 'Causeway',   skills: ['DoWhy', 'networkx', 'SciPy', 'matplotlib'] },
+  { name: 'NeuMF',      skills: ['PyTorch', 'FastAPI', 'sent.transformers', 'Pandas'] },
+]
+
+function MobileDAG() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+      {MOBILE_STACKS.map(g => (
+        <div key={g.name} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--ink)', fontWeight: 500, minWidth: 76 }}>
+            {g.name}
+          </span>
+          <span style={{ color: 'var(--faint)', fontSize: 11 }}>→</span>
+          {g.skills.map(s => (
+            <span key={s} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, padding: '2px 7px', borderRadius: 3, border: '1px solid var(--line)', color: 'var(--muted)', background: 'var(--surface)' }}>
+              {s}
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Hero() {
   const [mobile, setMobile] = useState(false)
+  const [taglineIdx, setTaglineIdx] = useState(0)
+  const [taglineFade, setTaglineFade] = useState(true)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)')
@@ -19,6 +54,17 @@ export default function Hero() {
     const handler = e => setMobile(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTaglineFade(false)
+      setTimeout(() => {
+        setTaglineIdx(i => (i + 1) % TAGLINES.length)
+        setTaglineFade(true)
+      }, 300)
+    }, 3200)
+    return () => clearInterval(timerRef.current)
   }, [])
 
   return (
@@ -36,18 +82,36 @@ export default function Hero() {
     >
       {/* Left: text */}
       <div style={{ flex: '1 1 0', minWidth: 0 }}>
-        <p
+        <span
           style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '5px 12px',
+            borderRadius: 999,
+            border: '1px solid rgba(77,61,247,0.22)',
+            background: 'var(--accent-soft)',
+            marginBottom: 20,
+          }}
+        >
+          <span style={{
+            width: 7,
+            height: 7,
+            borderRadius: '50%',
+            background: 'var(--accent)',
+            animation: 'statusPulse 2.4s ease-in-out infinite',
+            flexShrink: 0,
+          }} />
+          <span style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: 11,
             color: 'var(--accent)',
-            letterSpacing: '0.12em',
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
-            marginBottom: 16,
-          }}
-        >
-          ● currently: MSc AI/ML · building Threadfall
-        </p>
+          }}>
+            MSc AI/ML · building Threadfall
+          </span>
+        </span>
 
         <h1
           style={{
@@ -70,9 +134,12 @@ export default function Hero() {
             color: 'var(--muted)',
             marginBottom: 24,
             letterSpacing: '0.01em',
+            opacity: taglineFade ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+            minHeight: '1.4em',
           }}
         >
-          AI / ML Engineer — causal systems &amp; applied generative AI
+          {TAGLINES[taglineIdx]}
         </p>
 
         <p
@@ -162,7 +229,7 @@ export default function Hero() {
         }}
         aria-hidden="false"
       >
-        <CausalDAG mobile={mobile} />
+        {mobile ? <MobileDAG /> : <CausalDAG />}
       </div>
     </section>
   )

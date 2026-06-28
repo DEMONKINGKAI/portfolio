@@ -76,14 +76,14 @@ export default function Focus() {
     <section
       id="focus"
       style={{
-        borderTop: '1px solid var(--line)',
         padding: '80px 24px',
         maxWidth: 1100,
         margin: '0 auto',
       }}
     >
-      <SectionEyebrow label="focus" />
+      <SectionEyebrow label="focus" number="04" />
       <h2
+        className="section-heading"
         style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 700,

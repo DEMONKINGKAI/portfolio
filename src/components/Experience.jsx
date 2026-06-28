@@ -11,14 +11,14 @@ export default function Experience() {
     <section
       id="experience"
       style={{
-        borderTop: '1px solid var(--line)',
         padding: '80px 24px',
         maxWidth: 1100,
         margin: '0 auto',
       }}
     >
-      <SectionEyebrow label="experience" />
+      <SectionEyebrow label="experience" number="03" />
       <h2
+        className="section-heading"
         style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 700,

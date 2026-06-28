@@ -23,6 +23,16 @@ const PROJECTS = [
     github: 'YOUR_CAUSEWAY_GITHUB_URL',
     demo: null,
   },
+  {
+    name: 'NeuMF Genre-Aware Movie Recommender',
+    tagline: 'Describe a mood. Get a list that fits.',
+    featured: false,
+    problem: `Conventional recommenders force users into rigid genre filters or rely on opaque collaborative signals. This bridges natural-language intent and collaborative filtering: a user describes a mood instead of picking a category, while recommendations stay personalized to their taste.`,
+    approach: `A NeuMF backbone fuses Generalized Matrix Factorization (linear interactions) with an MLP (non-linear interactions), extended with a genre-aware projection and an optional intent tower. At serving time, an NLP layer embeds the query with sentence-transformers, steers it toward learned genre centroids, detects emotional affect with keyword-aware boosting, and combines the model score with genre, embedding-similarity, and popularity signals. The training pipeline keys item embeddings by item rather than per-interaction with lazy lookup in the data loader, which removed an out-of-memory bottleneck on the 25M-rating dataset.`,
+    stack: ['Deep Learning', 'Recommender Systems', 'NLP', 'PyTorch', 'FastAPI'],
+    github: null,
+    demo: null,
+  },
 ]
 
 function Chip({ label }) {
@@ -58,7 +68,7 @@ function ProjectCard({ p }) {
   }
 
   return (
-    <article style={cardStyle}>
+    <article className="project-card" style={cardStyle}>
       {p.featured && (
         <span
           style={{
@@ -161,30 +171,46 @@ function ProjectCard({ p }) {
         {p.stack.map(s => <Chip key={s} label={s} />)}
       </div>
 
-      <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-        <a
-          href={p.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
+      <div style={{ display: 'flex', gap: 10, marginTop: 4, alignItems: 'center' }}>
+        {!p.github && !p.demo && (
+          <span style={{
             fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 11,
-            color: 'var(--muted)',
-            textDecoration: 'none',
-            padding: '6px 12px',
+            fontSize: 9,
+            color: 'var(--faint)',
             border: '1px solid var(--line)',
-            borderRadius: 5,
-            background: 'transparent',
-            transition: 'color 0.15s, border-color 0.15s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--line)' }}
-        >
-          <GithubIcon size={12} /> repo
-        </a>
+            padding: '3px 9px',
+            borderRadius: 3,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}>
+            private repo
+          </span>
+        )}
+        {p.github && (
+          <a
+            href={p.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 11,
+              color: 'var(--muted)',
+              textDecoration: 'none',
+              padding: '6px 12px',
+              border: '1px solid var(--line)',
+              borderRadius: 5,
+              background: 'transparent',
+              transition: 'color 0.15s, border-color 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--line)' }}
+          >
+            <GithubIcon size={12} /> repo
+          </a>
+        )}
         {p.demo && (
           <a
             href={p.demo}
@@ -220,14 +246,14 @@ export default function Work() {
     <section
       id="work"
       style={{
-        borderTop: '1px solid var(--line)',
         padding: '80px 24px',
         maxWidth: 1100,
         margin: '0 auto',
       }}
     >
-      <SectionEyebrow label="selected work" />
+      <SectionEyebrow label="selected work" number="02" />
       <h2
+        className="section-heading"
         style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 700,

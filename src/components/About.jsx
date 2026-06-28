@@ -5,16 +5,16 @@ export default function About() {
     <section
       id="about"
       style={{
-        borderTop: '1px solid var(--line)',
         padding: '80px 24px',
         maxWidth: 1100,
         margin: '0 auto',
       }}
     >
       <div style={{ maxWidth: 680 }}>
-        <SectionEyebrow label="about" />
+        <SectionEyebrow label="about" number="01" />
 
         <h2
+          className="section-heading"
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 700,

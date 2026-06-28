@@ -1,24 +1,57 @@
 import { Mail, FileText, MapPin } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from './Icons'
+import { useState } from 'react'
 
 const links = [
-  { icon: GithubIcon,   label: 'GitHub',      href: 'YOUR_GITHUB_URL' },
-  { icon: LinkedinIcon, label: 'LinkedIn',    href: 'YOUR_LINKEDIN_URL' },
-  { icon: Mail,         label: 'YOUR_EMAIL',  href: 'mailto:YOUR_EMAIL' },
+  { icon: GithubIcon,   label: 'GitHub',      href: 'https://github.com/DEMONKINGKAI' },
+  { icon: LinkedinIcon, label: 'LinkedIn',    href: 'https://www.linkedin.com/in/archit-sharma-work/' },
+  { icon: Mail,         label: 'Email',        href: 'mailto:sharmarchit.work@gmail.com' },
   { icon: FileText,     label: 'CV',          href: '/cv.pdf' },
 ]
 
 export default function Footer() {
+  const [copied, setCopied] = useState(false)
+
+  const copyEmail = e => {
+    e.preventDefault()
+    navigator.clipboard.writeText('sharmarchit.work@gmail.com').then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
   return (
     <footer
       id="contact"
       style={{
-        borderTop: '1px solid var(--line)',
         padding: '64px 24px',
         maxWidth: 1100,
         margin: '0 auto',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* Ghost watermark */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: -10,
+          left: -10,
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontWeight: 700,
+          fontSize: 'clamp(72px, 16vw, 160px)',
+          letterSpacing: '-0.04em',
+          color: 'var(--ink)',
+          opacity: 0.03,
+          userSelect: 'none',
+          pointerEvents: 'none',
+          whiteSpace: 'nowrap',
+          lineHeight: 1,
+        }}
+      >
+        archit.sharma
+      </div>
       <div
         style={{
           display: 'flex',
@@ -56,17 +89,18 @@ export default function Footer() {
             Currently based in Germany, graduating mid-2026.
           </p>
           <a
-            href="mailto:YOUR_EMAIL"
+            href="mailto:sharmarchit.work@gmail.com"
+            className="link-underline"
+            onClick={copyEmail}
+            title="Click to copy"
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 13,
               color: 'var(--accent)',
-              textDecoration: 'none',
-              borderBottom: '1px solid var(--accent)',
-              paddingBottom: 2,
+              transition: 'opacity 0.2s',
             }}
           >
-            YOUR_EMAIL
+            {copied ? '✓ copied to clipboard' : 'sharmarchit.work@gmail.com'}
           </a>
         </div>
 
@@ -99,8 +133,7 @@ export default function Footer() {
 
       <div
         style={{
-          borderTop: '1px solid var(--line)',
-          paddingTop: 24,
+            paddingTop: 24,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',

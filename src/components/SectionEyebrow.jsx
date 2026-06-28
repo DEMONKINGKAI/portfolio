@@ -1,4 +1,4 @@
-export default function SectionEyebrow({ label }) {
+export default function SectionEyebrow({ label, number }) {
   return (
     <p
       style={{
@@ -10,9 +10,14 @@ export default function SectionEyebrow({ label }) {
         marginBottom: 12,
         display: 'flex',
         alignItems: 'center',
-        gap: 7,
+        gap: 10,
       }}
     >
+      {number && (
+        <span style={{ color: 'var(--faint)', letterSpacing: '0.08em' }}>
+          {number} —
+        </span>
+      )}
       <span style={{ fontSize: 8, lineHeight: 1 }}>●</span>
       {label}
     </p>
