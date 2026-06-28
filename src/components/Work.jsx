@@ -37,6 +37,7 @@ const PROJECTS = [
     name: 'Loan Approval Prediction Dataset',
     tagline: 'A clean, reproducible benchmark for credit risk ML.',
     featured: false,
+    medal: 'silver',
     problem: `Most publicly available loan datasets are poorly documented, synthetically generated, or lack the feature diversity needed to train robust credit risk models. Researchers building approval classifiers had no reliable open benchmark to work from.`,
     approach: `Engineered a custom dataset from real-world loan application data — systematically extracting features across applicant demographics, income, credit history, debt ratios, and collateral. Applied missing value imputation, outlier removal, and class balancing to produce a clean, model-ready corpus. Published on Kaggle with full documentation, feature descriptions, and a reproducible preprocessing pipeline so the broader ML community could validate and build on it.`,
     stack: ['Python', 'Pandas', 'NumPy', 'scikit-learn', 'Matplotlib', 'Kaggle'],
@@ -108,6 +109,35 @@ function ProjectCard({ p }) {
           }}
         >
           flagship
+        </span>
+      )}
+
+      {p.medal === 'silver' && (
+        <span
+          title="Kaggle Silver Medal"
+          style={{
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 9,
+            color: '#94A3B8',
+            background: 'rgba(148,163,184,0.10)',
+            border: '1px solid rgba(148,163,184,0.25)',
+            padding: '3px 9px 3px 7px',
+            borderRadius: 3,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+            <circle cx="12" cy="12" r="10" fill="rgba(148,163,184,0.3)" stroke="#94A3B8" strokeWidth="2"/>
+            <circle cx="12" cy="12" r="6" fill="#94A3B8" opacity="0.6"/>
+          </svg>
+          silver medal
         </span>
       )}
 
