@@ -29,18 +29,18 @@ const SKILLS = [
   { id: 'senttransf',  label: ['sent.','transf.'],x: 1012, y: 138, projects: ['neumf'],                      speed: 1.1,  phase: 3.9, amp: 5 },
   { id: 'numpy',       label: 'NumPy',            x: 992,  y: 215, projects: ['neumf'],                      speed: 1.0,  phase: 2.5, amp: 4 },
   // LoanDataset-only — LEFT and BELOW only
-  { id: 'ld_numpy',    label: 'NumPy',            x: 72,   y: 335, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
-  { id: 'kaggle',      label: 'Kaggle',           x: 88,   y: 440, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
-  { id: 'ld_bal',      label: ['class','balance'],x: 170,  y: 476, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
-  { id: 'ld_pandas',   label: 'Pandas',           x: 280,  y: 498, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
+  { id: 'ld_numpy',    label: 'NumPy',            x: 50,   y: 328, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
+  { id: 'kaggle',      label: 'Kaggle',           x: 52,   y: 452, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
+  { id: 'ld_bal',      label: ['class','balance'],x: 192,  y: 494, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
+  { id: 'ld_pandas',   label: 'Pandas',           x: 285,  y: 514, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
   // Shared LoanDataset + LoanModel — centered below both
-  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 495, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
+  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 502, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
   // LoanModel-only — RIGHT and BELOW only (zero upper-zone encroachment)
-  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 638,  y: 476, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
-  { id: 'lm_svm',     label: 'SVM',               x: 830,  y: 470, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
-  { id: 'xgboost',    label: 'XGBoost',           x: 918,  y: 454, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
-  { id: 'lm_rf',      label: ['Random','Forest'], x: 934,  y: 358, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
-  { id: 'seaborn',    label: 'Seaborn',           x: 928,  y: 272, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
+  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 626,  y: 494, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
+  { id: 'lm_svm',     label: 'SVM',               x: 810,  y: 490, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
+  { id: 'xgboost',    label: 'XGBoost',           x: 942,  y: 464, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
+  { id: 'lm_rf',      label: ['Random','Forest'], x: 958,  y: 368, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
+  { id: 'seaborn',    label: 'Seaborn',           x: 942,  y: 278, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
 ]
 
 const CAT = {
@@ -93,16 +93,50 @@ export default function CausalDAG() {
 
   useEffect(() => {
     if (NO_MOTION) return
+
+    // Mutable positions that persist across frames (lives in closure)
+    const cur = {}
+    SKILLS.forEach(s => { cur[s.id] = { x: s.x, y: s.y } })
+
+    const SKILL_R  = 38
+    const MIN_DIST = SKILL_R * 2 + 4   // 80 px — solid boundary
+    const LERP     = 0.06              // how fast to chase the floating target
+
     const tick = (ts) => {
       if (!t0Ref.current) t0Ref.current = ts
       const t = (ts - t0Ref.current) / 1000
-      const next = {}
+
+      // 1. Lerp each node toward its sinusoidal home position
       SKILLS.forEach(s => {
-        next[s.id] = {
-          x: s.x + Math.sin(t * s.speed + s.phase) * s.amp,
-          y: s.y + Math.cos(t * s.speed * 0.7 + s.phase) * s.amp,
-        }
+        const tx = s.x + Math.sin(t * s.speed + s.phase) * s.amp
+        const ty = s.y + Math.cos(t * s.speed * 0.7 + s.phase) * s.amp
+        cur[s.id].x += (tx - cur[s.id].x) * LERP
+        cur[s.id].y += (ty - cur[s.id].y) * LERP
       })
+
+      // 2. Iterative collision resolution — nodes push each other like solid balls
+      for (let iter = 0; iter < 5; iter++) {
+        for (let i = 0; i < SKILLS.length; i++) {
+          for (let j = i + 1; j < SKILLS.length; j++) {
+            const a = SKILLS[i], b = SKILLS[j]
+            const pa = cur[a.id], pb = cur[b.id]
+            const dx = pb.x - pa.x, dy = pb.y - pa.y
+            const dist = Math.sqrt(dx * dx + dy * dy) || 0.001
+            if (dist < MIN_DIST) {
+              const push = (MIN_DIST - dist) * 0.5
+              const nx = dx / dist, ny = dy / dist
+              pa.x -= nx * push
+              pa.y -= ny * push
+              pb.x += nx * push
+              pb.y += ny * push
+            }
+          }
+        }
+      }
+
+      // 3. Flush to React state for rendering
+      const next = {}
+      SKILLS.forEach(s => { next[s.id] = { x: cur[s.id].x, y: cur[s.id].y } })
       setPositions(next)
       rafRef.current = requestAnimationFrame(tick)
     }
@@ -122,7 +156,7 @@ export default function CausalDAG() {
 
   return (
     <svg
-      viewBox="0 0 1010 490"
+      viewBox="0 0 1060 560"
       width="100%"
       height="100%"
       aria-label="Skill graph: hover a project to see which skills power it"
