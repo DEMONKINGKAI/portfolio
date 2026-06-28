@@ -225,7 +225,7 @@ export default function Hero() {
         style={{
           flex: '0 0 auto',
           width: mobile ? '100%' : 480,
-          height: mobile ? 260 : 560,
+          height: mobile ? 260 : 620,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

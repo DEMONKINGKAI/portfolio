@@ -4,8 +4,8 @@ const PROJECTS = [
   { id: 'causeway',    label: 'Causeway',        x: 148, y: 135, r: 68 },
   { id: 'threadfall',  label: 'Threadfall',       x: 500, y: 85,  r: 68 },
   { id: 'neumf',       label: 'NeuMF',            x: 852, y: 135, r: 68 },
-  { id: 'loanDataset', label: ['Loan','Dataset'], x: 280, y: 358, r: 68 },
-  { id: 'loanModel',   label: ['Loan','Model'],   x: 720, y: 358, r: 68 },
+  { id: 'loanDataset', label: ['Loan','Dataset'], x: 280, y: 428, r: 68 },
+  { id: 'loanModel',   label: ['Loan','Model'],   x: 720, y: 428, r: 68 },
 ]
 
 const SKILLS = [
@@ -29,18 +29,18 @@ const SKILLS = [
   { id: 'senttransf',  label: ['sent.','transf.'],x: 1012, y: 138, projects: ['neumf'],                      speed: 1.1,  phase: 3.9, amp: 5 },
   { id: 'numpy',       label: 'NumPy',            x: 992,  y: 215, projects: ['neumf'],                      speed: 1.0,  phase: 2.5, amp: 4 },
   // LoanDataset-only — LEFT and BELOW only
-  { id: 'ld_numpy',    label: 'NumPy',            x: 50,   y: 328, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
-  { id: 'kaggle',      label: 'Kaggle',           x: 52,   y: 452, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
-  { id: 'ld_bal',      label: ['class','balance'],x: 192,  y: 494, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
-  { id: 'ld_pandas',   label: 'Pandas',           x: 285,  y: 514, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
+  { id: 'ld_numpy',    label: 'NumPy',            x: 50,   y: 398, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
+  { id: 'kaggle',      label: 'Kaggle',           x: 52,   y: 522, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
+  { id: 'ld_bal',      label: ['class','balance'],x: 192,  y: 564, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
+  { id: 'ld_pandas',   label: 'Pandas',           x: 285,  y: 584, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
   // Shared LoanDataset + LoanModel — centered below both
-  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 502, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
+  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 572, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
   // LoanModel-only — RIGHT and BELOW only (zero upper-zone encroachment)
-  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 626,  y: 494, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
-  { id: 'lm_svm',     label: 'SVM',               x: 810,  y: 490, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
-  { id: 'xgboost',    label: 'XGBoost',           x: 942,  y: 464, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
-  { id: 'lm_rf',      label: ['Random','Forest'], x: 958,  y: 368, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
-  { id: 'seaborn',    label: 'Seaborn',           x: 942,  y: 278, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
+  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 626,  y: 564, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
+  { id: 'lm_svm',     label: 'SVM',               x: 810,  y: 560, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
+  { id: 'xgboost',    label: 'XGBoost',           x: 942,  y: 534, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
+  { id: 'lm_rf',      label: ['Random','Forest'], x: 958,  y: 438, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
+  { id: 'seaborn',    label: 'Seaborn',           x: 942,  y: 348, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
 ]
 
 const CAT = {
@@ -156,7 +156,7 @@ export default function CausalDAG() {
 
   return (
     <svg
-      viewBox="0 0 1060 560"
+      viewBox="0 0 1060 640"
       width="100%"
       height="100%"
       aria-label="Skill graph: hover a project to see which skills power it"
