@@ -19,15 +19,53 @@ const GROUPS = [
     title: 'Generative AI & NLP',
     items: [
       'LLM application architecture',
+      'Multimodal LLMs (vision + language)',
       'RAG-style pipelines',
       'Document generation',
+      'Visual question answering',
+      'VAEs · GANs · Diffusion Models',
       'HuggingFace ecosystem',
-      'Gemini · Amazon Titan',
+      'Gemini · Amazon Titan · GPT-4o',
       'Prompt engineering',
     ],
   },
   {
-    title: 'MLOps & Cloud',
+    title: 'Data Science & Analytics',
+    items: [
+      'Feature engineering & selection',
+      'Class imbalance handling',
+      'Supervised & unsupervised ML',
+      'XGBoost · Random Forest · SVM',
+      'Synthetic data generation',
+      'Kaggle · reproducible pipelines',
+      'Pandas · NumPy · Matplotlib',
+      'Statistical modelling',
+    ],
+  },
+  {
+    title: 'Computer Vision',
+    items: [
+      'CNNs · ResNet · ViT',
+      'Image classification & embedding',
+      'Feature extraction (torchvision)',
+      'Multimodal grounding',
+      'Document understanding',
+      'Image-text retrieval',
+    ],
+  },
+  {
+    title: 'Reinforcement Learning',
+    items: [
+      'Policy gradient (PPO · A3C)',
+      'Q-learning · DQN',
+      'Model-based RL',
+      'Causal RL & planning',
+      'Reward shaping',
+      'Gymnasium / OpenAI Gym',
+    ],
+  },
+  {
+    title: 'MLOps & Engineering',
     items: [
       'GCP · AWS · Azure',
       'Multi-cloud deployments',
@@ -52,18 +90,8 @@ function Tag({ label }) {
         background: 'var(--surface)',
         color: 'var(--muted)',
         display: 'inline-block',
-        transition: 'border-color 0.15s, color 0.15s, background 0.15s',
         cursor: 'default',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'var(--accent)'
-        e.currentTarget.style.color = 'var(--accent)'
-        e.currentTarget.style.background = 'var(--accent-soft)'
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'var(--line)'
-        e.currentTarget.style.color = 'var(--muted)'
-        e.currentTarget.style.background = 'var(--surface)'
+        userSelect: 'none',
       }}
     >
       {label}

@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Database } from 'lucide-react'
 import { GithubIcon } from './Icons'
 import SectionEyebrow from './SectionEyebrow'
 
@@ -10,8 +10,8 @@ const PROJECTS = [
     problem: `LLMs lose track of world state in long-running interactive systems — they contradict themselves, drift, and hallucinate continuity. Most "AI games" hand both decision-making and narration to the model, leaving state unreliable.`,
     approach: `A clean architectural boundary: a deterministic causal engine (pgmpy-based probabilistic DAG) owns all world state and consequences. The LLM is restricted strictly to narration and never makes a decision. Every player choice propagates through the causal graph — the world stays consistent across arbitrarily long sessions.`,
     stack: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind', 'HuggingFace'],
-    github: 'YOUR_THREADFALL_GITHUB_URL',
-    demo: 'YOUR_THREADFALL_DEMO_URL',
+    github: 'https://github.com/DEMONKINGKAI/Threadfall',
+    demo: null,
   },
   {
     name: 'Causeway',
@@ -20,7 +20,7 @@ const PROJECTS = [
     problem: `Working hands-on with causal graphs requires tooling that lets you build, inspect, and run inference in the same environment — a gap between theory and practical experimentation.`,
     approach: `A self-contained toolkit for constructing causal DAGs, running do-calculus queries, visualizing Markov equivalence classes, and computing backdoor/frontdoor adjustments. Threadfall's causal backend grew out of this project.`,
     stack: ['Python', 'pgmpy', 'DoWhy', 'networkx'],
-    github: 'YOUR_CAUSEWAY_GITHUB_URL',
+    github: 'https://github.com/DEMONKINGKAI/Causeway',
     demo: null,
   },
   {
@@ -30,8 +30,30 @@ const PROJECTS = [
     problem: `Conventional recommenders force users into rigid genre filters or rely on opaque collaborative signals. This bridges natural-language intent and collaborative filtering: a user describes a mood instead of picking a category, while recommendations stay personalized to their taste.`,
     approach: `A NeuMF backbone fuses Generalized Matrix Factorization (linear interactions) with an MLP (non-linear interactions), extended with a genre-aware projection and an optional intent tower. At serving time, an NLP layer embeds the query with sentence-transformers, steers it toward learned genre centroids, detects emotional affect with keyword-aware boosting, and combines the model score with genre, embedding-similarity, and popularity signals. The training pipeline keys item embeddings by item rather than per-interaction with lazy lookup in the data loader, which removed an out-of-memory bottleneck on the 25M-rating dataset.`,
     stack: ['Deep Learning', 'Recommender Systems', 'NLP', 'PyTorch', 'FastAPI'],
+    github: 'https://github.com/DEMONKINGKAI/NeuMF-Movie-Recommendation-Engine',
+    demo: null,
+  },
+  {
+    name: 'Loan Approval Prediction Dataset',
+    tagline: 'A clean, reproducible benchmark for credit risk ML.',
+    featured: false,
+    problem: `Most publicly available loan datasets are poorly documented, synthetically generated, or lack the feature diversity needed to train robust credit risk models. Researchers building approval classifiers had no reliable open benchmark to work from.`,
+    approach: `Engineered a custom dataset from real-world loan application data — systematically extracting features across applicant demographics, income, credit history, debt ratios, and collateral. Applied missing value imputation, outlier removal, and class balancing to produce a clean, model-ready corpus. Published on Kaggle with full documentation, feature descriptions, and a reproducible preprocessing pipeline so the broader ML community could validate and build on it.`,
+    stack: ['Python', 'Pandas', 'NumPy', 'scikit-learn', 'Matplotlib', 'Kaggle'],
     github: null,
     demo: null,
+    links: [{ label: 'dataset', href: 'https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset', icon: 'db' }],
+  },
+  {
+    name: 'Loan Approval Prediction Model',
+    tagline: 'Six algorithms. One benchmark. Full transparency.',
+    featured: false,
+    problem: `Credit risk models are typically trained on a single algorithm with no comparison baseline, making it hard to understand which approach actually performs best — and why. Black-box approval decisions erode trust in financial AI.`,
+    approach: `Benchmarked six classification algorithms — Logistic Regression, Random Forest, XGBoost, SVM, KNN, and Decision Tree — on the custom loan dataset. Each model was tuned via cross-validation with full hyperparameter grids. The notebook includes feature importance analysis, precision/recall/F1 comparisons, confusion matrices, and ROC curves, giving a transparent view of where each algorithm wins and where it fails on credit data.`,
+    stack: ['Python', 'scikit-learn', 'XGBoost', 'Pandas', 'Matplotlib', 'Seaborn', 'Kaggle'],
+    github: null,
+    demo: null,
+    links: [{ label: 'notebook', href: 'https://www.kaggle.com/code/architsharma01/loan-approval-prediction', icon: 'external' }],
   },
 ]
 
@@ -171,40 +193,27 @@ function ProjectCard({ p }) {
         {p.stack.map(s => <Chip key={s} label={s} />)}
       </div>
 
-      <div style={{ display: 'flex', gap: 10, marginTop: 4, alignItems: 'center' }}>
-        {!p.github && !p.demo && (
-          <span style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 9,
-            color: 'var(--faint)',
-            border: '1px solid var(--line)',
-            padding: '3px 9px',
-            borderRadius: 3,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-          }}>
+      <div style={{ display: 'flex', gap: 10, marginTop: 4, alignItems: 'center', flexWrap: 'wrap' }}>
+        {/* Custom links array (e.g. Kaggle) */}
+        {p.links && p.links.map(l => (
+          <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)', textDecoration: 'none', padding: '6px 12px', border: '1px solid var(--line)', borderRadius: 5, background: 'transparent', transition: 'color 0.15s, border-color 0.15s' }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--line)' }}
+          >
+            {l.icon === 'db' ? <Database size={12} /> : <ExternalLink size={12} />}
+            {l.label}
+          </a>
+        ))}
+        {/* Standard github/demo links */}
+        {!p.links && !p.github && !p.demo && (
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--faint)', border: '1px solid var(--line)', padding: '3px 9px', borderRadius: 3, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             private repo
           </span>
         )}
         {p.github && (
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 11,
-              color: 'var(--muted)',
-              textDecoration: 'none',
-              padding: '6px 12px',
-              border: '1px solid var(--line)',
-              borderRadius: 5,
-              background: 'transparent',
-              transition: 'color 0.15s, border-color 0.15s',
-            }}
+          <a href={p.github} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)', textDecoration: 'none', padding: '6px 12px', border: '1px solid var(--line)', borderRadius: 5, background: 'transparent', transition: 'color 0.15s, border-color 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
             onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--line)' }}
           >
@@ -212,24 +221,8 @@ function ProjectCard({ p }) {
           </a>
         )}
         {p.demo && (
-          <a
-            href={p.demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 11,
-              color: 'var(--muted)',
-              textDecoration: 'none',
-              padding: '6px 12px',
-              border: '1px solid var(--line)',
-              borderRadius: 5,
-              background: 'transparent',
-              transition: 'color 0.15s, border-color 0.15s',
-            }}
+          <a href={p.demo} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)', textDecoration: 'none', padding: '6px 12px', border: '1px solid var(--line)', borderRadius: 5, background: 'transparent', transition: 'color 0.15s, border-color 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
             onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--line)' }}
           >

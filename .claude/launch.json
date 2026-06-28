@@ -1,1 +1,1 @@
-{"version":"0.0.1","configurations":[{"name":"portfolio","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":5173}]}
+{"version":"0.0.1","configurations":[{"name":"portfolio","runtimeExecutable":"C:\\Program Files\\nodejs\\npm.cmd","runtimeArgs":["run","dev"],"port":5173,"cwd":"C:\\Users\\DARTHVADER\\Desktop\\Portfolio Website"}]}

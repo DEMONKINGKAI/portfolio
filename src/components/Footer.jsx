@@ -86,7 +86,7 @@ export default function Footer() {
             }}
           >
             Open to full-time roles in AI/ML engineering, causal inference, and applied generative AI.
-            Currently based in Germany, graduating mid-2026.
+            Currently based in Germany.
           </p>
           <a
             href="mailto:sharmarchit.work@gmail.com"

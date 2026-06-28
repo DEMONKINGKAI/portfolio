@@ -29,9 +29,9 @@ export default function About() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           {[
-            `I'm an AI/ML engineer and MSc candidate in Artificial Intelligence & Machine Learning, graduating mid-2026 from Germany. My background spans product engineering and applied ML — I've shipped NLP document-generation pipelines, built generative-AI applications on Gemini and Amazon Titan, and designed MLOps pipelines across GCP, AWS, and Azure.`,
-            `My current research and engineering focus is causal inference: DAGs, d-separation, the do-calculus, structural causal models, and discovery algorithms (PC, NOTEARS, DirectLiNGAM). I'm particularly interested in causal representation learning — CausalVAE, CITRIS, BISCUIT — and Halpern–Pearl actual causality, which gives a rigorous language for counterfactual claims.`,
-            `The thread running through my projects is a deliberate separation of concerns: a deterministic causal engine owns state and consequence; an LLM handles narration or interface. This isn't a philosophical position so much as a practical one — it's the architecture that stays inspectable and consistent as systems scale in complexity.`,
+            `I'm an AI/ML engineer with an MSc in Artificial Intelligence & Machine Learning, based in Germany. My work spans the full stack of applied ML — NLP pipelines, generative-AI on Gemini and Amazon Titan, computer vision with CNNs and ViTs, reinforcement learning for sequential decision-making, and MLOps across GCP, AWS, and Azure. I'm comfortable taking a model from research prototype to production API.`,
+            `My interests span multiple paradigms. In language and vision I work with LLMs, RAG pipelines, multimodal models that reason jointly over text and images, and systems for document understanding and visual QA. In RL I work with policy gradient methods, Q-learning, and model-based approaches — particularly where RL intersects with causal reasoning to produce agents that can plan and adapt rather than just react. On the structured side: causal inference, recommender systems, and representation learning.`,
+            `Across all of this, I default to a clean separation of concerns — deterministic logic owns state and decisions; learned models handle perception and language. Systems that reason explicitly are easier to audit, extend, and trust, whether the input is a sentence, an image, or an environment observation.`,
           ].map((p, i) => (
             <p
               key={i}

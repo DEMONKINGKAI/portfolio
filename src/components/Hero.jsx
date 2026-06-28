@@ -11,15 +11,17 @@ const primaryLinks = [
 ]
 
 const TAGLINES = [
-  'AI / ML Engineer — causal systems & applied generative AI',
-  'building deterministic AI that reasons, not just generates',
-  'MSc AI/ML · graduating mid-2026 · based in Germany',
+  'AI / ML Engineer — causal · generative · multimodal · RL',
+  'building systems that reason, adapt, and see',
+  'MSc AI/ML · based in Germany',
 ]
 
 const MOBILE_STACKS = [
-  { name: 'Threadfall', skills: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind'] },
-  { name: 'Causeway',   skills: ['DoWhy', 'networkx', 'SciPy', 'matplotlib'] },
-  { name: 'NeuMF',      skills: ['PyTorch', 'FastAPI', 'sent.transformers', 'Pandas'] },
+  { name: 'Threadfall',   skills: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind'] },
+  { name: 'Causeway',     skills: ['DoWhy', 'networkx', 'SciPy', 'matplotlib'] },
+  { name: 'NeuMF',        skills: ['PyTorch', 'FastAPI', 'sent.transformers', 'Pandas'] },
+  { name: 'Loan Dataset', skills: ['sklearn', 'Kaggle'] },
+  { name: 'Loan Model',   skills: ['XGBoost', 'Seaborn', 'sklearn'] },
 ]
 
 function MobileDAG() {
@@ -152,9 +154,10 @@ export default function Hero() {
             marginBottom: 32,
           }}
         >
-          I work at the seam between probabilistic causal models and large language models —
-          deterministic, reasoned state where it matters, generation only where it helps.
-          The LLM narrates; the causal engine decides.
+          I build AI systems across the full spectrum — causal inference, generative models,
+          computer vision, multimodal LLMs, and reinforcement learning. My focus is on
+          architectures where reasoning is explicit and decisions are traceable, not emergent
+          side-effects of scale.
         </p>
 
         <div
@@ -222,7 +225,7 @@ export default function Hero() {
         style={{
           flex: '0 0 auto',
           width: mobile ? '100%' : 480,
-          height: mobile ? 220 : 340,
+          height: mobile ? 260 : 520,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

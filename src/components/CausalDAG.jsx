@@ -1,43 +1,76 @@
 import { useState, useEffect, useRef } from 'react'
 
 const PROJECTS = [
-  { id: 'causeway',   label: 'Causeway',   x: 120, y: 155, r: 52 },
-  { id: 'threadfall', label: 'Threadfall', x: 385, y: 155, r: 60 },
-  { id: 'neumf',      label: 'NeuMF',      x: 655, y: 155, r: 52 },
+  { id: 'causeway',    label: 'Causeway',        x: 148, y: 135, r: 68 },
+  { id: 'threadfall',  label: 'Threadfall',       x: 500, y: 85,  r: 68 },
+  { id: 'neumf',       label: 'NeuMF',            x: 852, y: 135, r: 68 },
+  { id: 'loanDataset', label: ['Loan','Dataset'], x: 280, y: 358, r: 68 },
+  { id: 'loanModel',   label: ['Loan','Model'],   x: 720, y: 358, r: 68 },
 ]
 
 const SKILLS = [
-  { id: 'dowhy',      label: 'DoWhy',            x: -18, y: 72,  projects: ['causeway'],              speed: 1.1,  phase: 0,   amp: 5 },
-  { id: 'scipy',      label: 'SciPy',             x: -20, y: 155, projects: ['causeway'],              speed: 0.95, phase: 0.6, amp: 4 },
-  { id: 'networkx',   label: 'networkx',          x: -18, y: 238, projects: ['causeway'],              speed: 0.85, phase: 2.2, amp: 6 },
-  { id: 'matplotlib', label: ['matplot','lib'],   x: 75,  y: 18,  projects: ['causeway'],              speed: 1.0,  phase: 1.3, amp: 4 },
-  { id: 'python',     label: 'Python',            x: 245, y: 42,  projects: ['causeway','threadfall'], speed: 1.0,  phase: 4.4, amp: 5 },
-  { id: 'pgmpy',      label: 'pgmpy',             x: 245, y: 268, projects: ['causeway','threadfall'], speed: 1.2,  phase: 1.1, amp: 7 },
-  { id: 'tailwind',   label: 'Tailwind',          x: 385, y: 12,  projects: ['threadfall'],            speed: 0.85, phase: 4.0, amp: 5 },
-  { id: 'huggingface',label: ['Hugging','Face'],  x: 385, y: 298, projects: ['threadfall'],            speed: 1.05, phase: 5.5, amp: 5 },
-  { id: 'fastapi',    label: 'FastAPI',           x: 520, y: 50,  projects: ['threadfall','neumf'],    speed: 0.95, phase: 3.3, amp: 6 },
-  { id: 'react',      label: 'React',             x: 520, y: 260, projects: ['threadfall','neumf'],    speed: 1.15, phase: 2.7, amp: 6 },
-  { id: 'pandas',     label: 'Pandas',            x: 655, y: 15,  projects: ['neumf'],                 speed: 0.88, phase: 5.1, amp: 4 },
-  { id: 'pytorch',    label: 'PyTorch',           x: 798, y: 78,  projects: ['neumf'],                 speed: 0.9,  phase: 1.8, amp: 5 },
-  { id: 'senttransf', label: ['sent.','transf.'], x: 816, y: 155, projects: ['neumf'],                 speed: 1.1,  phase: 3.9, amp: 5 },
-  { id: 'numpy',      label: 'NumPy',             x: 798, y: 232, projects: ['neumf'],                 speed: 1.0,  phase: 2.5, amp: 4 },
+  // Causeway-only — LEFT side
+  { id: 'dowhy',       label: 'DoWhy',           x: -40,  y: 48,  projects: ['causeway'],                    speed: 1.1,  phase: 0,   amp: 5 },
+  { id: 'scipy',       label: 'SciPy',            x: -42,  y: 135, projects: ['causeway'],                    speed: 0.95, phase: 0.6, amp: 4 },
+  { id: 'networkx',    label: 'networkx',         x: -40,  y: 222, projects: ['causeway'],                    speed: 0.85, phase: 2.2, amp: 6 },
+  { id: 'matplotlib',  label: ['matplot','lib'],  x: 58,   y: 5,   projects: ['causeway'],                    speed: 1.0,  phase: 1.3, amp: 4 },
+  // Shared Causeway + Threadfall — upper band, well above center
+  { id: 'python',      label: 'Python',           x: 318,  y: 5,   projects: ['causeway','threadfall'],       speed: 1.0,  phase: 4.4, amp: 5 },
+  { id: 'pgmpy',       label: 'pgmpy',            x: 318,  y: 235, projects: ['causeway','threadfall'],       speed: 1.2,  phase: 1.1, amp: 7 },
+  // Threadfall-only — directly above and below
+  { id: 'tailwind',    label: 'Tailwind',         x: 500,  y: -62, projects: ['threadfall'],                  speed: 0.85, phase: 4.0, amp: 5 },
+  { id: 'huggingface', label: ['Hugging','Face'], x: 500,  y: 252, projects: ['threadfall'],                  speed: 1.05, phase: 5.5, amp: 5 },
+  // Shared Threadfall + NeuMF — upper band, well above center
+  { id: 'fastapi',     label: 'FastAPI',          x: 678,  y: 5,   projects: ['threadfall','neumf'],          speed: 0.95, phase: 3.3, amp: 6 },
+  { id: 'react',       label: 'React',            x: 678,  y: 252, projects: ['threadfall','neumf'],          speed: 1.15, phase: 2.7, amp: 6 },
+  // NeuMF-only — RIGHT side
+  { id: 'pandas',      label: 'Pandas',           x: 852,  y: 2,   projects: ['neumf'],                      speed: 0.88, phase: 5.1, amp: 4 },
+  { id: 'pytorch',     label: 'PyTorch',          x: 992,  y: 68,  projects: ['neumf'],                      speed: 0.9,  phase: 1.8, amp: 5 },
+  { id: 'senttransf',  label: ['sent.','transf.'],x: 1012, y: 138, projects: ['neumf'],                      speed: 1.1,  phase: 3.9, amp: 5 },
+  { id: 'numpy',       label: 'NumPy',            x: 992,  y: 215, projects: ['neumf'],                      speed: 1.0,  phase: 2.5, amp: 4 },
+  // LoanDataset-only — LEFT and BELOW only
+  { id: 'ld_numpy',    label: 'NumPy',            x: 72,   y: 335, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
+  { id: 'kaggle',      label: 'Kaggle',           x: 88,   y: 440, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
+  { id: 'ld_bal',      label: ['class','balance'],x: 170,  y: 476, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
+  { id: 'ld_pandas',   label: 'Pandas',           x: 280,  y: 498, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
+  // Shared LoanDataset + LoanModel — centered below both
+  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 495, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
+  // LoanModel-only — RIGHT and BELOW only (zero upper-zone encroachment)
+  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 638,  y: 476, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
+  { id: 'lm_svm',     label: 'SVM',               x: 830,  y: 470, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
+  { id: 'xgboost',    label: 'XGBoost',           x: 918,  y: 454, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
+  { id: 'lm_rf',      label: ['Random','Forest'], x: 934,  y: 358, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
+  { id: 'seaborn',    label: 'Seaborn',           x: 928,  y: 272, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
 ]
 
 const CAT = {
-  python: { fill: 'rgba(77,61,247,0.06)',  stroke: 'rgba(77,61,247,0.28)',  text: '#7B72E8' },
-  web:    { fill: 'rgba(217,119,6,0.06)',  stroke: 'rgba(217,119,6,0.32)',  text: '#B45309' },
-  ai:     { fill: 'rgba(13,148,136,0.06)', stroke: 'rgba(13,148,136,0.32)', text: '#0F766E' },
+  python: { fill: 'var(--cat-py-fill)',   stroke: 'var(--cat-py-stroke)',   text: 'var(--cat-py-text)'   },
+  web:    { fill: 'var(--cat-web-fill)',  stroke: 'var(--cat-web-stroke)',  text: 'var(--cat-web-text)'  },
+  ai:     { fill: 'var(--cat-ai-fill)',   stroke: 'var(--cat-ai-stroke)',   text: 'var(--cat-ai-text)'   },
+  data:   { fill: 'var(--cat-data-fill)', stroke: 'var(--cat-data-stroke)', text: 'var(--cat-data-text)' },
 }
 const SKILL_CAT = {
+  // purple — causal inference & scientific Python
   dowhy: 'python', scipy: 'python', networkx: 'python', matplotlib: 'python',
-  python: 'python', pgmpy: 'python', numpy: 'python', pandas: 'python', pytorch: 'python',
+  python: 'python', pgmpy: 'python',
+  // yellow — engineering & platform tooling
   fastapi: 'web', react: 'web', tailwind: 'web',
-  huggingface: 'ai', senttransf: 'ai',
+  kaggle: 'web', sklearn: 'web', seaborn: 'web',
+  // teal — neural / AI models & algorithms
+  huggingface: 'ai', senttransf: 'ai', pytorch: 'ai',
+  lm_rf: 'ai', lm_logit: 'ai', lm_svm: 'ai',
+  // green — data wrangling & boosted models
+  pandas: 'data', numpy: 'data',
+  ld_numpy: 'data', ld_pandas: 'data', ld_bal: 'data', xgboost: 'data',
 }
 
 const SPRING    = 'cubic-bezier(0.22,1.4,0.36,1)'
 const NO_MOTION = typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function projLabel(p) {
+  return Array.isArray(p.label) ? p.label.join(' ') : p.label
+}
 
 function edgePath(sx, sy, sr, px, py, pr) {
   const dx = px - sx, dy = py - sy
@@ -83,13 +116,13 @@ export default function CausalDAG() {
 
   const tooltipSkill = hoveredSkill ? SKILLS.find(s => s.id === hoveredSkill) : null
   const tooltipText  = tooltipSkill
-    ? `used in ${tooltipSkill.projects.map(pid => PROJECTS.find(p => p.id === pid).label).join(' · ')}`
+    ? `used in ${tooltipSkill.projects.map(pid => projLabel(PROJECTS.find(p => p.id === pid))).join(' · ')}`
     : ''
   const tooltipW = Math.max(tooltipText.length * 5.4 + 20, 60)
 
   return (
     <svg
-      viewBox="0 0 830 310"
+      viewBox="0 0 1010 490"
       width="100%"
       height="100%"
       aria-label="Skill graph: hover a project to see which skills power it"
@@ -99,7 +132,7 @@ export default function CausalDAG() {
     >
       <defs>
         <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0.5 L0,5.5 L5,3 Z" fill="#C4C8D4" />
+          <path d="M0,0.5 L0,5.5 L5,3 Z" fill="var(--faint)" />
         </marker>
         <marker id="arr-on" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
           <path d="M0,0.5 L0,5.5 L5,3 Z" fill="var(--accent)" />
@@ -135,9 +168,9 @@ export default function CausalDAG() {
           return (
             <path
               key={`${s.id}-${pid}`}
-              d={edgePath(pos.x, pos.y, 32, p.x, p.y, p.r)}
+              d={edgePath(pos.x, pos.y, 38, p.x, p.y, p.r)}
               fill="none"
-              stroke={on ? 'var(--accent)' : '#CDD0DA'}
+              stroke={on ? 'var(--accent)' : 'var(--faint)'}
               strokeWidth={on ? 1.8 : 1}
               strokeDasharray={on ? 'none' : shared ? '5 3' : 'none'}
               markerEnd={on ? 'url(#arr-on)' : 'url(#arr)'}
@@ -174,7 +207,7 @@ export default function CausalDAG() {
               transition: `transform ${NO_MOTION ? '0.1s ease' : `0.18s ${SPRING}`}`,
             }}>
               <circle
-                r={32}
+                r={38}
                 fill={on ? 'var(--accent-soft)' : cat.fill}
                 stroke={on ? 'var(--accent)' : cat.stroke}
                 strokeWidth={on ? 1.5 : 1}
@@ -185,10 +218,10 @@ export default function CausalDAG() {
                   key={li}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  y={(li - (lines.length - 1) / 2) * 13}
+                  y={(li - (lines.length - 1) / 2) * 14}
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: on ? 500 : 400,
                     fill: on ? 'var(--accent)' : cat.text,
                     transition: 'fill 0.2s',
@@ -206,8 +239,11 @@ export default function CausalDAG() {
 
       {/* Project nodes */}
       {PROJECTS.map((p, i) => {
-        const isHov = hovered === p.id
-        const dim   = !!hovered && !isHov
+        const isHov  = hovered === p.id
+        const dim    = !!hovered && !isHov
+        const labels = Array.isArray(p.label) ? p.label : [p.label]
+        const fsize  = Array.isArray(p.label) ? 15 : 18
+
         return (
           <g
             key={p.id}
@@ -218,7 +254,7 @@ export default function CausalDAG() {
             onBlur={() => setHovered(null)}
             tabIndex={0}
             role="button"
-            aria-label={`${p.label} — hover to highlight skills used`}
+            aria-label={`${projLabel(p)} — hover to highlight skills used`}
             style={{
               cursor: 'pointer',
               outline: 'none',
@@ -236,24 +272,28 @@ export default function CausalDAG() {
               <circle
                 r={p.r}
                 fill="var(--surface)"
-                stroke={isHov ? 'var(--accent)' : '#8A909E'}
+                stroke={isHov ? 'var(--accent)' : 'var(--muted)'}
                 strokeWidth={isHov ? 2 : 1.5}
                 style={{ transition: 'stroke 0.2s' }}
               />
-              <text
-                textAnchor="middle"
-                dominantBaseline="middle"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: p.id === 'threadfall' ? 15 : 13,
-                  fontWeight: 500,
-                  fill: '#5A6170',
-                  userSelect: 'none',
-                  pointerEvents: 'none',
-                }}
-              >
-                {p.label}
-              </text>
+              {labels.map((line, li) => (
+                <text
+                  key={li}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  y={(li - (labels.length - 1) / 2) * 17}
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: fsize,
+                    fontWeight: 500,
+                    fill: 'var(--muted)',
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  {line}
+                </text>
+              ))}
             </g>
           </g>
         )
@@ -263,7 +303,7 @@ export default function CausalDAG() {
       {tooltipSkill && (() => {
         const pos = positions[tooltipSkill.id]
         return (
-          <g transform={`translate(${pos.x},${pos.y - 46})`} style={{ pointerEvents: 'none' }}>
+          <g transform={`translate(${pos.x},${pos.y - 52})`} style={{ pointerEvents: 'none' }}>
             <rect
               x={-tooltipW / 2} y={-12}
               width={tooltipW} height={22} rx={4}
