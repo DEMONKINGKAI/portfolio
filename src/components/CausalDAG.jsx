@@ -1,46 +1,61 @@
 import { useState, useEffect, useRef } from 'react'
 
 const PROJECTS = [
-  { id: 'causeway',    label: 'Causeway',        x: 148, y: 135, r: 68 },
-  { id: 'threadfall',  label: 'Threadfall',       x: 500, y: 85,  r: 68 },
-  { id: 'neumf',       label: 'NeuMF',            x: 852, y: 135, r: 68 },
-  { id: 'loanDataset', label: ['Loan','Dataset'], x: 280, y: 428, r: 68 },
-  { id: 'loanModel',   label: ['Loan','Model'],   x: 720, y: 428, r: 68 },
+  { id: 'causeway',      label: 'Causeway',            x: 148, y: 115, r: 68 },
+  { id: 'threadfall',    label: 'Threadfall',           x: 500, y: 65,  r: 68 },
+  { id: 'neumf',         label: 'NeuMF',                x: 852, y: 115, r: 68 },
+  { id: 'pharmacausal',  label: ['Pharma','Causal'],    x: 148, y: 290, r: 68 },
+  { id: 'evidentia',     label: 'Evidentia',            x: 500, y: 290, r: 68 },
+  { id: 'fonsiuris',     label: ['Fons','Iuris'],       x: 852, y: 290, r: 68 },
+  { id: 'loanDataset',   label: ['Loan','Dataset'],     x: 290, y: 478, r: 68 },
+  { id: 'loanModel',     label: ['Loan','Model'],       x: 710, y: 478, r: 68 },
 ]
 
 const SKILLS = [
   // Causeway-only — LEFT side
-  { id: 'dowhy',       label: 'DoWhy',           x: -40,  y: 48,  projects: ['causeway'],                    speed: 1.1,  phase: 0,   amp: 5 },
-  { id: 'scipy',       label: 'SciPy',            x: -42,  y: 135, projects: ['causeway'],                    speed: 0.95, phase: 0.6, amp: 4 },
-  { id: 'networkx',    label: 'networkx',         x: -40,  y: 222, projects: ['causeway'],                    speed: 0.85, phase: 2.2, amp: 6 },
+  { id: 'dowhy',       label: 'DoWhy',           x: -48,  y: 48,  projects: ['causeway'],                    speed: 1.1,  phase: 0,   amp: 5 },
+  { id: 'scipy',       label: 'SciPy',            x: -48,  y: 130, projects: ['causeway'],                    speed: 0.95, phase: 0.6, amp: 4 },
+  { id: 'networkx',    label: 'networkx',         x: -48,  y: 215, projects: ['causeway'],                    speed: 0.85, phase: 2.2, amp: 6 },
   { id: 'matplotlib',  label: ['matplot','lib'],  x: 58,   y: 5,   projects: ['causeway'],                    speed: 1.0,  phase: 1.3, amp: 4 },
-  // Shared Causeway + Threadfall — upper band, well above center
-  { id: 'python',      label: 'Python',           x: 318,  y: 5,   projects: ['causeway','threadfall'],       speed: 1.0,  phase: 4.4, amp: 5 },
-  { id: 'pgmpy',       label: 'pgmpy',            x: 318,  y: 235, projects: ['causeway','threadfall'],       speed: 1.2,  phase: 1.1, amp: 7 },
-  // Threadfall-only — directly above and below
-  { id: 'tailwind',    label: 'Tailwind',         x: 500,  y: -62, projects: ['threadfall'],                  speed: 0.85, phase: 4.0, amp: 5 },
-  { id: 'huggingface', label: ['Hugging','Face'], x: 500,  y: 252, projects: ['threadfall'],                  speed: 1.05, phase: 5.5, amp: 5 },
-  // Shared Threadfall + NeuMF — upper band, well above center
-  { id: 'fastapi',     label: 'FastAPI',          x: 678,  y: 5,   projects: ['threadfall','neumf'],          speed: 0.95, phase: 3.3, amp: 6 },
-  { id: 'react',       label: 'React',            x: 678,  y: 252, projects: ['threadfall','neumf'],          speed: 1.15, phase: 2.7, amp: 6 },
+  // Shared Causeway + Threadfall
+  { id: 'python',      label: 'Python',           x: 318,  y: 2,   projects: ['causeway','threadfall'],       speed: 1.0,  phase: 4.4, amp: 5 },
+  { id: 'pgmpy',       label: 'pgmpy',            x: 318,  y: 228, projects: ['causeway','threadfall'],       speed: 1.2,  phase: 1.1, amp: 7 },
+  // Threadfall-only
+  { id: 'tailwind',    label: 'Tailwind',         x: 500,  y: -78, projects: ['threadfall'],                  speed: 0.85, phase: 4.0, amp: 5 },
+  { id: 'huggingface', label: ['Hugging','Face'], x: 390,  y: 200, projects: ['threadfall'],                  speed: 1.05, phase: 5.5, amp: 5 },
+  // Shared Threadfall + NeuMF
+  { id: 'fastapi',     label: 'FastAPI',          x: 678,  y: 2,   projects: ['threadfall','neumf'],          speed: 0.95, phase: 3.3, amp: 6 },
+  { id: 'react',       label: 'React',            x: 678,  y: 240, projects: ['threadfall','neumf'],          speed: 1.15, phase: 2.7, amp: 6 },
   // NeuMF-only — RIGHT side
-  { id: 'pandas',      label: 'Pandas',           x: 852,  y: 2,   projects: ['neumf'],                      speed: 0.88, phase: 5.1, amp: 4 },
-  { id: 'pytorch',     label: 'PyTorch',          x: 992,  y: 68,  projects: ['neumf'],                      speed: 0.9,  phase: 1.8, amp: 5 },
-  { id: 'senttransf',  label: ['sent.','transf.'],x: 1012, y: 138, projects: ['neumf'],                      speed: 1.1,  phase: 3.9, amp: 5 },
-  { id: 'numpy',       label: 'NumPy',            x: 992,  y: 215, projects: ['neumf'],                      speed: 1.0,  phase: 2.5, amp: 4 },
-  // LoanDataset-only — LEFT and BELOW only
-  { id: 'ld_numpy',    label: 'NumPy',            x: 50,   y: 398, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
-  { id: 'kaggle',      label: 'Kaggle',           x: 52,   y: 522, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
-  { id: 'ld_bal',      label: ['class','balance'],x: 192,  y: 564, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
-  { id: 'ld_pandas',   label: 'Pandas',           x: 285,  y: 584, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
-  // Shared LoanDataset + LoanModel — centered below both
-  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 572, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
-  // LoanModel-only — RIGHT and BELOW only (zero upper-zone encroachment)
-  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 626,  y: 564, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
-  { id: 'lm_svm',     label: 'SVM',               x: 810,  y: 560, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
-  { id: 'xgboost',    label: 'XGBoost',           x: 942,  y: 534, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
-  { id: 'lm_rf',      label: ['Random','Forest'], x: 958,  y: 438, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
-  { id: 'seaborn',    label: 'Seaborn',           x: 942,  y: 348, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
+  { id: 'pandas',      label: 'Pandas',           x: 852,  y: -22, projects: ['neumf'],                      speed: 0.88, phase: 5.1, amp: 4 },
+  { id: 'pytorch',     label: 'PyTorch',          x: 978,  y: 48,  projects: ['neumf'],                      speed: 0.9,  phase: 1.8, amp: 5 },
+  { id: 'senttransf',  label: ['sent.','transf.'],x: 998,  y: 128, projects: ['neumf'],                      speed: 1.1,  phase: 3.9, amp: 5 },
+  { id: 'numpy',       label: 'NumPy',            x: 978,  y: 208, projects: ['neumf'],                      speed: 1.0,  phase: 2.5, amp: 4 },
+  // pharmacausal-only — LEFT below causeway zone
+  { id: 'fci',         label: 'FCI',              x: -48,  y: 302, projects: ['pharmacausal'],                speed: 0.92, phase: 1.5, amp: 5 },
+  { id: 'faers',       label: 'FAERS',            x: -48,  y: 392, projects: ['pharmacausal'],                speed: 1.0,  phase: 3.2, amp: 4 },
+  { id: 'sider',       label: 'SIDER',            x: 58,   y: 452, projects: ['pharmacausal'],                speed: 0.88, phase: 0.9, amp: 5 },
+  // evidentia-only — CENTER below
+  { id: 'ddxplus',     label: 'DDXPlus',          x: 385,  y: 405, projects: ['evidentia'],                   speed: 1.0,  phase: 2.8, amp: 4 },
+  { id: 'bayes_net',   label: ['Bayes','Net'],    x: 500,  y: 455, projects: ['evidentia'],                   speed: 0.9,  phase: 4.6, amp: 5 },
+  { id: 'brier',       label: 'Brier',            x: 615,  y: 405, projects: ['evidentia'],                   speed: 1.05, phase: 1.7, amp: 4 },
+  // fons-iuris-only — RIGHT middle zone
+  { id: 'rag',         label: 'RAG',              x: 968,  y: 292, projects: ['fonsiuris'],                   speed: 0.95, phase: 3.5, amp: 5 },
+  { id: 'nli',         label: 'NLI',              x: 985,  y: 378, projects: ['fonsiuris'],                   speed: 1.08, phase: 5.0, amp: 4 },
+  { id: 'chromadb',    label: 'ChromaDB',         x: 968,  y: 458, projects: ['fonsiuris'],                   speed: 0.88, phase: 2.1, amp: 5 },
+  // LoanDataset-only — LEFT and BELOW
+  { id: 'ld_numpy',    label: 'NumPy',            x: 55,   y: 540, projects: ['loanDataset'],                 speed: 0.9,  phase: 0.8, amp: 4 },
+  { id: 'kaggle',      label: 'Kaggle',           x: 55,   y: 618, projects: ['loanDataset'],                 speed: 1.0,  phase: 3.0, amp: 4 },
+  { id: 'ld_bal',      label: ['class','balance'],x: 192,  y: 642, projects: ['loanDataset'],                 speed: 0.85, phase: 4.2, amp: 4 },
+  { id: 'ld_pandas',   label: 'Pandas',           x: 298,  y: 660, projects: ['loanDataset'],                 speed: 1.05, phase: 2.6, amp: 5 },
+  // Shared LoanDataset + LoanModel
+  { id: 'sklearn',     label: 'sklearn',          x: 500,  y: 660, projects: ['loanDataset','loanModel'],     speed: 0.9,  phase: 1.5, amp: 5 },
+  // LoanModel-only — RIGHT and BELOW
+  { id: 'lm_logit',   label: ['Logistic','Reg'],  x: 630,  y: 642, projects: ['loanModel'],                   speed: 1.08, phase: 3.8, amp: 4 },
+  { id: 'lm_svm',     label: 'SVM',               x: 820,  y: 645, projects: ['loanModel'],                   speed: 0.88, phase: 5.2, amp: 5 },
+  { id: 'xgboost',    label: 'XGBoost',           x: 948,  y: 625, projects: ['loanModel'],                   speed: 0.95, phase: 2.0, amp: 5 },
+  { id: 'lm_rf',      label: ['Random','Forest'], x: 948,  y: 545, projects: ['loanModel'],                   speed: 0.92, phase: 1.2, amp: 5 },
+  { id: 'seaborn',    label: 'Seaborn',           x: 838,  y: 565, projects: ['loanModel'],                   speed: 1.1,  phase: 4.5, amp: 4 },
 ]
 
 const CAT = {
@@ -52,16 +67,17 @@ const CAT = {
 const SKILL_CAT = {
   // purple — causal inference & scientific Python
   dowhy: 'python', scipy: 'python', networkx: 'python', matplotlib: 'python',
-  python: 'python', pgmpy: 'python',
+  python: 'python', pgmpy: 'python', fci: 'python', bayes_net: 'python',
   // yellow — engineering & platform tooling
   fastapi: 'web', react: 'web', tailwind: 'web',
-  kaggle: 'web', sklearn: 'web', seaborn: 'web',
-  // teal — neural / AI models & algorithms
+  kaggle: 'web', sklearn: 'web', seaborn: 'web', chromadb: 'web',
+  // orange — neural / AI models & algorithms
   huggingface: 'ai', senttransf: 'ai', pytorch: 'ai',
-  lm_rf: 'ai', lm_logit: 'ai', lm_svm: 'ai',
-  // green — data wrangling & boosted models
+  lm_rf: 'ai', lm_logit: 'ai', lm_svm: 'ai', rag: 'ai', nli: 'ai',
+  // green — data wrangling & datasets
   pandas: 'data', numpy: 'data',
   ld_numpy: 'data', ld_pandas: 'data', ld_bal: 'data', xgboost: 'data',
+  faers: 'data', sider: 'data', ddxplus: 'data', brier: 'data',
 }
 
 const SPRING    = 'cubic-bezier(0.22,1.4,0.36,1)'
@@ -156,7 +172,7 @@ export default function CausalDAG() {
 
   return (
     <svg
-      viewBox="0 0 1060 640"
+      viewBox="0 0 1060 700"
       width="100%"
       height="100%"
       aria-label="Skill graph: hover a project to see which skills power it"

@@ -17,11 +17,14 @@ const TAGLINES = [
 ]
 
 const MOBILE_STACKS = [
-  { name: 'Threadfall',   skills: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind'] },
-  { name: 'Causeway',     skills: ['DoWhy', 'networkx', 'SciPy', 'matplotlib'] },
-  { name: 'NeuMF',        skills: ['PyTorch', 'FastAPI', 'sent.transformers', 'Pandas'] },
-  { name: 'Loan Dataset', skills: ['sklearn', 'Kaggle'] },
-  { name: 'Loan Model',   skills: ['XGBoost', 'Seaborn', 'sklearn'] },
+  { name: 'Threadfall',    skills: ['Python', 'FastAPI', 'pgmpy', 'React', 'Tailwind'] },
+  { name: 'Causeway',      skills: ['DoWhy', 'networkx', 'SciPy', 'matplotlib'] },
+  { name: 'NeuMF',         skills: ['PyTorch', 'FastAPI', 'sent.transformers', 'Pandas'] },
+  { name: 'PharmaCausal',  skills: ['pgmpy', 'FCI', 'FAERS', 'SIDER', 'scipy'] },
+  { name: 'Evidentia',     skills: ['pgmpy', 'FastAPI', 'React', 'DDXPlus', 'Brier'] },
+  { name: 'Fons Iuris',    skills: ['FastAPI', 'React', 'ChromaDB', 'RAG', 'NLI'] },
+  { name: 'Loan Dataset',  skills: ['sklearn', 'Kaggle'] },
+  { name: 'Loan Model',    skills: ['XGBoost', 'Seaborn', 'sklearn'] },
 ]
 
 function MobileDAG() {
@@ -225,7 +228,7 @@ export default function Hero() {
         style={{
           flex: '0 0 auto',
           width: mobile ? '100%' : 480,
-          height: mobile ? 260 : 620,
+          height: mobile ? 260 : 680,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
