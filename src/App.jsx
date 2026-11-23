@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
+import SkillGraph from './components/SkillGraph'
 import About from './components/About'
+import Now from './components/Now'
 import Work from './components/Work'
 import Experience from './components/Experience'
 import Focus from './components/Focus'
 import Footer from './components/Footer'
 import './index.css'
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from '@vercel/analytics/react'
 
 export default function App() {
-  const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem('theme')
-    if (saved) return saved === 'dark'
-    return true
-  })
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark)
-    localStorage.setItem('theme', dark ? 'dark' : 'light')
-  }, [dark])
-
   // Reading progress bar
   useEffect(() => {
     const bar = document.getElementById('progress-bar')
@@ -46,7 +37,7 @@ export default function App() {
           observer.unobserve(e.target)
         }
       }),
-      { threshold: 0.07, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
     )
     els.forEach(el => {
       if (el.getBoundingClientRect().top > window.innerHeight * 0.92) {
@@ -61,22 +52,20 @@ export default function App() {
     <>
       <Cursor />
       <div id="progress-bar" />
-      <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-        <Nav dark={dark} onToggleDark={() => setDark(d => !d)} />
+      <div style={{ minHeight: '100vh' }}>
+        <Nav />
         <main>
           <Hero />
-          <hr className="section-divider" />
+          <SkillGraph />
           <About />
-          <hr className="section-divider" />
+          <Now />
           <Work />
-          <hr className="section-divider" />
           <Experience />
-          <hr className="section-divider" />
           <Focus />
-          <hr className="section-divider" />
           <Footer />
         </main>
       </div>
+      <Analytics />
     </>
   )
 }

@@ -1,53 +1,56 @@
-# archit.sharma — portfolio
+# KAI — Archit Sharma · AI/ML Engineer
 
-Personal portfolio site for Archit Sharma, AI/ML engineer. Built with Vite + React + Tailwind CSS.
+> I build AI that shows its work.
 
-The signature feature is an interactive causal DAG in the hero section: hovering a node highlights its downstream path, mirroring the do-operator — intervene on a node and watch what it touches.
+Personal portfolio of Archit "Kai" Sharma, MSc AI & ML student at TU Darmstadt, working on causal inference, probabilistic graphical models, grounded generative AI and visual hallucinations in multimodal models.
 
-## Local development
+**Live:** [portfolio-demonkingkais-projects.vercel.app](https://portfolio-demonkingkais-projects.vercel.app) · **GitHub:** [@DEMONKINGKAI](https://github.com/DEMONKINGKAI) · **LinkedIn:** [archit-sharma-work](https://www.linkedin.com/in/archit-sharma-work/)
+
+![Portfolio preview](docs/preview.png)
+
+## What's on the site
+
+- **Hero:** an interactive confounder graph. Hit `do(x)` and the backdoor edge Z → X is cut, turning P(y | x) into P(y | do(x)).
+- **Skill graph:** hover a project to light up the tools behind it. It pauses its animation while off screen, and phones get a compact list instead.
+- **Currently:** the TU Darmstadt Multimodal AI Project Lab (visual hallucinations in multimodal reasoning traces).
+- **Featured work:** [Overseer](https://github.com/DEMONKINGKAI/overseer) and [Decision Graph](https://github.com/DEMONKINGKAI/neuro-graph), with live mini-demos, followed by the causal and grounded-AI projects.
+- Experience timeline, toolkit, contact.
+
+The visual style matches the [GitHub profile README](https://github.com/DEMONKINGKAI): void-black base, cyan / crimson / amber accents, pixel type and terminal panels.
+
+## Stack
+
+React 19 · Vite · Tailwind CSS 4 · lucide-react · Vercel (hosting + cookieless Web Analytics)
+
+No external requests at runtime: fonts (Inter, JetBrains Mono, Silkscreen; SIL OFL) are self-hosted from `public/fonts/`.
+
+## Run locally
 
 ```bash
 npm install
-npm run dev        # starts at http://localhost:5173
-npm run build      # production build → dist/
-npm run preview    # preview the production build locally
+npm run dev       # http://localhost:5173
+npm run build     # production build → dist/
+npm run lint      # oxlint
 ```
 
-## Deploy to Vercel (free)
+## Layout
 
-1. Push this repo to GitHub (commands below).
-2. Go to [vercel.com](https://vercel.com) → **Add New → Project**.
-3. Import the GitHub repo. Vercel auto-detects Vite.
-4. Build command: `npm run build` (auto-filled).
-5. Output directory: `dist` (auto-filled).
-6. Click **Deploy**. Done — you get a `*.vercel.app` URL instantly.
-7. Add a custom domain later via **Project → Settings → Domains**.
-
-No `vercel.json` needed — Vite's defaults work out of the box.
-
-## Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "initial commit: portfolio site"
-git branch -M main
-git remote add origin YOUR_GITHUB_REPO_URL
-git push -u origin main
+```
+src/
+  App.jsx                 page assembly, scroll progress + reveal
+  components/
+    Hero.jsx              KAI glitch title, do(x) panel, stats strip
+    SkillGraph.jsx        wraps CausalDAG (desktop) / skill list (mobile)
+    CausalDAG.jsx         project ↔ skill graph data + rendering
+    About.jsx  Now.jsx  Work.jsx  Experience.jsx  Focus.jsx  Footer.jsx
+    SectionEyebrow.jsx    README-style section title bar
+    Runner.jsx            running-light border effect
+    Cursor.jsx            subtle glow that trails the mouse
+  index.css               palette, fonts, shared styles
+public/
+  Archit_Sharma_CV.pdf    CV (cv.pdf kept for old links)
+  og.png                  link-preview image
+  datenschutz.html        privacy notice
 ```
 
-Replace `YOUR_GITHUB_REPO_URL` with your actual repo URL (e.g. `https://github.com/yourusername/portfolio.git`).
-
----
-
-## Placeholder checklist
-
-| What | File | Notes |
-|---|---|---|
-| GitHub profile URL | `src/components/Hero.jsx:7`, `src/components/Footer.jsx:7` | Replace `YOUR_GITHUB_URL` |
-| LinkedIn URL | `src/components/Hero.jsx:8`, `src/components/Footer.jsx:8` | Replace `YOUR_LINKEDIN_URL` |
-| Email address | `src/components/Hero.jsx:9`, `src/components/Footer.jsx:9` + footer display | Replace `YOUR_EMAIL` (appears twice in Footer) |
-| Threadfall GitHub repo | `src/components/Work.jsx` — `github` field, project 0 | Replace `YOUR_THREADFALL_GITHUB_URL` |
-| Causeway GitHub repo | `src/components/Work.jsx` — `github` field, project 1 | Replace `YOUR_CAUSEWAY_GITHUB_URL` |
-| Threadfall demo URL | `src/components/Work.jsx` — `demo` field, project 0 | Replace `YOUR_THREADFALL_DEMO_URL` |
-| CV PDF | `public/cv.pdf` | Drop your actual PDF here; the CV button is already wired |
+Deployed automatically by Vercel on every push to `main`.

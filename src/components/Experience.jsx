@@ -1,4 +1,4 @@
-import SectionEyebrow from './SectionEyebrow'
+import SectionTitle from './SectionEyebrow'
 
 const ROLES = [
   {
@@ -84,164 +84,58 @@ const ROLES = [
   },
 ]
 
-function Chip({ label }) {
-  return (
-    <span style={{
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: 10,
-      padding: '2px 8px',
-      borderRadius: 4,
-      background: 'var(--bg)',
-      border: '1px solid var(--line)',
-      color: 'var(--muted)',
-      display: 'inline-block',
-    }}>
-      {label}
-    </span>
-  )
-}
+const COLORS = ['var(--cy)', 'var(--vi)', 'var(--am)']
 
 function RoleCard({ role, index }) {
+  const c = COLORS[index % 3]
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--line)',
-        borderRadius: 8,
-        padding: '32px 36px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 24,
-        position: 'relative',
-      }}
-    >
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
-        <div>
-          <h3 style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 18,
-            color: 'var(--ink)',
-            margin: '0 0 4px',
-          }}>
-            {role.title}
-          </h3>
-          <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            color: 'var(--accent)',
-            margin: '0 0 2px',
-          }}>
-            {role.company}
-          </p>
-          <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 11,
-            color: 'var(--faint)',
-            margin: 0,
-          }}>
-            {role.location}
-          </p>
-        </div>
-        <span style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 11,
-          color: 'var(--faint)',
-          whiteSpace: 'nowrap',
-          paddingTop: 2,
-        }}>
-          {role.period}
-        </span>
+    <div style={{ display: 'grid', gridTemplateColumns: '28px 1fr', gap: 18 }}>
+      {/* timeline rail */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <span style={{ width: 14, height: 14, border: `2px solid ${c}`, background: index === 0 ? c : 'var(--bg)', boxShadow: `0 0 12px ${c}`, marginTop: 28, flexShrink: 0 }} />
+        <span style={{ width: 2, flex: 1, background: 'repeating-linear-gradient(180deg, var(--line2) 0 6px, transparent 6px 10px)', marginTop: 8 }} />
       </div>
-
-      {/* Summary */}
-      <p style={{
-        fontFamily: "'Inter', sans-serif",
-        fontSize: 14,
-        lineHeight: 1.65,
-        color: 'var(--muted)',
-        margin: 0,
-        paddingBottom: 16,
-        borderBottom: '1px solid var(--line)',
-        fontStyle: 'italic',
-      }}>
-        {role.summary}
-      </p>
-
-      {/* Sections */}
-      {role.sections.map(sec => (
-        <div key={sec.label}>
-          <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 9,
-            color: 'var(--faint)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            margin: '0 0 12px',
-          }}>
-            {sec.label}
-          </p>
-          <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {sec.items.map((item, i) => (
-              <li key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <span style={{
-                  flexShrink: 0,
-                  width: 5, height: 5,
-                  borderRadius: '50%',
-                  background: 'var(--accent)',
-                  marginTop: 9,
-                }} />
-                <p style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 14,
-                  lineHeight: 1.65,
-                  color: 'var(--muted)',
-                  margin: 0,
-                }}>
-                  {item}
-                </p>
-              </li>
-            ))}
-          </ul>
+      <article className="panel card" style={{ '--cc': c, padding: '26px 28px', marginBottom: 18 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
+          <div>
+            <h3 style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 20, color: 'var(--ink)', margin: '0 0 4px' }}>{role.title}</h3>
+            <p className="mono" style={{ fontSize: 12.5, margin: 0 }}>
+              <span style={{ color: c }}>@ {role.company}</span> <span className="faint">·</span> <span className="muted">{role.location}</span>
+            </p>
+          </div>
+          <span className="mono" style={{ fontSize: 11.5, color: c, border: `1px solid ${c}`, padding: '4px 10px', background: `color-mix(in srgb, ${c} 8%, transparent)` }}>{role.period}</span>
         </div>
-      ))}
-
-      {/* Stack */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingTop: 4 }}>
-        {role.stack.map(s => <Chip key={s} label={s} />)}
-      </div>
+        <p style={{ fontSize: 14.5, lineHeight: 1.7, color: 'var(--soft)', margin: '0 0 14px' }}>{role.summary}</p>
+        {role.sections.map((sec, si) => (
+          <details key={sec.label} open={index === 0 && si === 0} style={{ borderTop: '1px solid var(--line)', padding: '10px 0' }}>
+            <summary className="mono" style={{ fontSize: 11.5, color: 'var(--muted)', letterSpacing: '0.06em' }}>
+              <span className="chev" style={{ color: c }}>▸</span> {sec.label}
+            </summary>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '10px 0 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {sec.items.map((it, k) => (
+                <li key={k} style={{ display: 'flex', gap: 10, fontSize: 14, lineHeight: 1.65, color: 'var(--soft)' }}>
+                  <span className="mono" style={{ color: c, flexShrink: 0 }}>›</span>{it}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))}
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
+          {role.stack.map(s => <span key={s} className="tag">{s}</span>)}
+        </div>
+      </article>
     </div>
   )
 }
 
 export default function Experience() {
   return (
-    <section
-      id="experience"
-      style={{
-        padding: '80px 24px',
-        maxWidth: 1100,
-        margin: '0 auto',
-      }}
-    >
-      <SectionEyebrow label="experience" number="03" />
-      <h2
-        className="section-heading"
-        style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontWeight: 700,
-          fontSize: 32,
-          letterSpacing: '-0.02em',
-          color: 'var(--ink)',
-          margin: '0 0 40px',
-        }}
-      >
-        Where I've worked
-      </h2>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 800 }}>
-        {ROLES.map((role, i) => <RoleCard key={i} role={role} index={i} />)}
+    <section id="experience" className="section">
+      <div className="wrap">
+        <SectionTitle number="04" label="Experience" color="var(--cy)" sub="git log --author=kai --industry" />
+        <div>
+          {ROLES.map((r, i) => <RoleCard key={r.title + r.period} role={r} index={i} />)}
+        </div>
       </div>
     </section>
   )

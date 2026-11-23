@@ -1,25 +1,18 @@
-export default function SectionEyebrow({ label, number }) {
+// README-style section title bar:  [02]  FEATURED WORK▮              ▣
+export default function SectionTitle({ number, label, color = 'var(--cy)', sub }) {
   return (
-    <p
-      style={{
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: 11,
-        color: 'var(--accent)',
-        letterSpacing: '0.1em',
-        textTransform: 'lowercase',
-        marginBottom: 12,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-      }}
-    >
-      {number && (
-        <span style={{ color: 'var(--faint)', letterSpacing: '0.08em' }}>
-          {number} —
-        </span>
+    <div>
+      <div className="sec-title" style={{ color }}>
+        <span className="num">{number}</span>
+        <h2 style={{ color }}>{label}</h2>
+        <span className="sq hide-sm" />
+        <span className="ticks" />
+      </div>
+      {sub && (
+        <p className="mono" style={{ fontSize: 12.5, color: 'var(--muted)', margin: '-20px 0 32px' }}>
+          <span style={{ color }}>// </span>{sub}
+        </p>
       )}
-      <span style={{ fontSize: 8, lineHeight: 1 }}>●</span>
-      {label}
-    </p>
+    </div>
   )
 }
